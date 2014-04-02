@@ -23,9 +23,9 @@ def loadMaze(filename):
   except IOError:
     print "uh oh, something happened!"
     return None
-    
-    
-    
+
+
+
 ###
 # Function: printMaze
 # Purpose:  Takes in a 2D list that represents a
@@ -49,8 +49,8 @@ def findStart(maze):
   for y in range(len(maze)):
     for x in range(len(maze[y])):
       if(maze[y][x] == "S"):
-        return (x, y)
-  return (-1, -1)
+        return x, y
+  return -1, -1
 
 
 
@@ -69,7 +69,7 @@ def solve(maze, y, x):
     return False
 
   elif(maze[y][x] == " " or maze[y][x] == "S"):
-    maze[y][x] = "^" 
+    maze[y][x] = "^"
     if(solve(maze, y-1, x)):
       return True
 
@@ -90,27 +90,27 @@ def solve(maze, y, x):
   return False
 
 
+def main(filename):
+  #load the maze
+  myMaze = loadMaze(filename)
 
-#load the maze
-myMaze = loadMaze("maze2.maze")
+  #print it on the screen
+  print "Before solving:"
+  printMaze(myMaze)
 
-#print it on the screen
-print "Before solving:"
-printMaze(myMaze)
+  #find the start coordinates
+  x, y = findStart(myMaze)
 
-#find the start coordinates
-start = findStart(myMaze)
-
-#makes sure the maze had a start
-if(start != (-1, -1)):
-  #solve it!
-  if(solve(myMaze, start[1], start[0])):
-    #put the "S" back in the maze since we changed it
-    myMaze[start[1]][start[0]] = "S"
-    #print it after it's been solved
-    print "After solving:"
-    printMaze(myMaze)
+  #makes sure the maze had a start
+  if(x != -1 and y != -1):
+    #solve it!
+    if(solve(myMaze, x, y)):
+      #put the "S" back in the maze since we changed it
+      myMaze[x][y] = "S"
+      #print it after it's been solved
+      print "After solving:"
+      printMaze(myMaze)
+    else:
+      print "There is no solution"
   else:
-    print "There is no solution"
-else:
-  print "The maze has no starting position"
+    print "The maze has no starting position"
